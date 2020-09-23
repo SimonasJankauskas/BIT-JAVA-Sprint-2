@@ -4,56 +4,90 @@ import java.io.*;
 import java.util.Scanner;
 
 public class SprintTwo {
-    public static void main(String[] args)  {
-        File file = new File("./data/newFile.csv");
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter employee full name: ");
+        String fullName = scan.nextLine();
+        System.out.println("Enter employee department: ");
+        String department = scan.nextLine();
+        System.out.println("Enter employee age: ");
+        int age = scan.nextInt();
+        System.out.println("Enter employee salary: ");
+        double salary = scan.nextDouble();
+        scan.close();
 
-        // ... Input duomenų išsaugojimas naujame faile (Writing)
+        Employee inputData = new Employee();
+        inputData.setFullName(fullName);
+        inputData.setDepartment(department);
+        inputData.setAge(age);
+        inputData.setSalary(salary);
+
+        File newFile = new File("./data/newFile.csv");
+
         try {
-            Scanner scan = new Scanner(System.in);
-            PrintWriter out = new PrintWriter(file);
-            System.out.println("Enter employee full name: ");
-            String fullName = scan.nextLine();
-            out.println("Employee full name is: " + fullName);
-            System.out.println("Enter employee department: ");
-            String department = scan.nextLine();
-            out.println("Employee department is: " + department);
-            System.out.println("Enter employee age: ");
-            int age = scan.nextInt();
-            out.println("Employee age is: " + age);
-            System.out.println("Enter employee salary: ");
-            double salary = scan.nextDouble();
-            out.println("Employee salary is: " + salary + "EU");
-            FileReader fileReader = new FileReader(file);
+            FileWriter wr = new FileWriter(newFile, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(wr);
+            bufferedWriter.write("Employee full name: " + inputData.getFullName()
+                    + "\nEmployee department: " + inputData.getDepartment()
+                    + "\nEmployee age: " + inputData.getAge()
+                    + "\nEmployee salary: " + inputData.getSalary() + "EUR");
+            bufferedWriter.write("\n");
+            bufferedWriter.write("----------------------");
+            bufferedWriter.write("\n");
+            bufferedWriter.close();
+
+            FileReader fileReader = new FileReader(newFile);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String fileLine = bufferedReader.readLine();
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // ... Duomenų išvedimas iš failo į consolę (Reading)
-        File  relativeFile = new File("./data/newFile.csv");
-        try {
-
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-
-            String fileLine = bufferedReader.readLine();
-            System.out.println("----- Duomenys išspausdinti iš failo -----");
             while (fileLine != null) {
                 System.out.println(fileLine);
                 fileLine = bufferedReader.readLine();
+
             }
-        } catch (FileNotFoundException e){
-            System.out.println("File was not found");
-        } catch (IOException e){
-            System.out.println("IOException error");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println("Programos pabaiga!");
+    }
+}
 
+class Employee {
+    private String fullName;
+    private String department;
+    private int age;
+    private double salary;
 
+    public String getFullName() {
+        return fullName;
+    }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 }
 
